@@ -36,5 +36,5 @@ disks = Disk.get_all(staging)
 
 for disk in sorted(disks, key = cmp_to_key(compare)):
 
-    print("%s" % disk.get_name())
+    print(f"{disk.get_name()}")
 

@@ -32,11 +32,11 @@ def extract_exception_names(node):
 
         child1 = node1.childNodes[0]
         if child1.nodeType == child1.TEXT_NODE:
-            exception_names.append("storage::" + child1.data)
+            exception_names.append(f"storage::{child1.data}")
 
         for node2 in node1.getElementsByTagName("ref"):
             child2 = node2.childNodes[0]
-            exception_names.append("storage::" + child2.data)
+            exception_names.append(f"storage::{child2.data}")
 
     return exception_names
 
@@ -57,14 +57,15 @@ def process_functions(compound_name, node):
 
         exception_names = []
 
-        for node2 in node1.getElementsByTagName("detaileddescription"):
-
+        for _ in node1.getElementsByTagName("detaileddescription"):
             for node3 in node1.getElementsByTagName("parameterlist"):
                 kind = node3.getAttribute("kind")
                 if kind == "exception":
                     exception_names = extract_exception_names(node3)
 
-        functions.append(Function(compound_name + "::" + name, args_string, exception_names))
+        functions.append(
+            Function(f"{compound_name}::{name}", args_string, exception_names)
+        )
 
     return functions
 
@@ -95,7 +96,7 @@ def load_single_file(filename):
                     kind = node3.getAttribute("kind")
                     if kind in ["public-func", "public-static-func", "func"]:
                         tmp = process_functions(compound_name, node3)
-                        if not 'functions' in classes.nodes[compound_name]:
+                        if 'functions' not in classes.nodes[compound_name]:
                             classes.nodes[compound_name]['functions'] = tmp
                         else:
                             classes.nodes[compound_name]['functions'] += tmp
@@ -133,12 +134,12 @@ def check_exceptions_of_function(function):
     for exception_name in function.exception_names:
 
         if not classes.has_node(exception_name):
-            print("unknown exception for %s%s" % (function.name, function.args_string))
+            print(f"unknown exception for {function.name}{function.args_string}")
             sys.exit(1)
 
         for seen_exception_name in seen_exception_names:
             if exception_name in networkx.descendants(classes, seen_exception_name):
-                print("wrong order of exceptions for %s%s" % (function.name, function.args_string))
+                print(f"wrong order of exceptions for {function.name}{function.args_string}")
                 sys.exit(1)
 
         seen_exception_names.append(exception_name)

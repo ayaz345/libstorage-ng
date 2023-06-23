@@ -42,7 +42,7 @@ print("\t " + ",\n\t ".join(device_names) + ")")
 print("")
 
 print("%factory(const storage::Device* storage::downcast,")
-print("\t " + ",\n\t ".join(["const " + name for name in device_names]) + ")")
+print("\t " + ",\n\t ".join([f"const {name}" for name in device_names]) + ")")
 print("")
 
 holder_names = gatherer("storage::Holder")
@@ -52,7 +52,7 @@ print("\t " + ",\n\t ".join(holder_names) + ")")
 print("")
 
 print("%factory(const storage::Holder* storage::downcast,")
-print("\t " + ",\n\t ".join(["const " + name for name in holder_names]) + ")")
+print("\t " + ",\n\t ".join([f"const {name}" for name in holder_names]) + ")")
 
 print("""
 %inline %{

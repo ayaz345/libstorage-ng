@@ -14,7 +14,7 @@ def output_exception_classes():
     exception_classnames.add("storage::Exception")
 
     for classname in sorted(exception_classnames):
-        print("%exceptionclass " + classname + ";")
+        print(f"%exceptionclass {classname};")
 
     print("")
 
@@ -23,8 +23,16 @@ def output_functions(functions):
 
     for function in sorted(functions, key=lambda function: function.name):
         if function.exception_names:
-            print("%%catches(%s) %s%s;" % (", ".join(name for name in function.exception_names),
-                                           function.name, function.args_string))
+            print(
+                (
+                    "%%catches(%s) %s%s;"
+                    % (
+                        ", ".join(function.exception_names),
+                        function.name,
+                        function.args_string,
+                    )
+                )
+            )
 
 
 def output_global_functions():

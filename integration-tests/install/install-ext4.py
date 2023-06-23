@@ -12,14 +12,12 @@ from storage import *
 
 def find_disk(staging):
 
-    disks = Disk.get_all(staging)
+    if disks := Disk.get_all(staging):
+        # TODO check for thing that cannot be deleted, e.g. multipath
 
-    if not disks:
+        return disks[0]
+    else:
         raise Exception("no disks found")
-
-    # TODO check for thing that cannot be deleted, e.g. multipath
-
-    return disks[0]
 
 
 def create_partition(gpt, size):
@@ -36,9 +34,7 @@ def create_partition(gpt, size):
 
         region.set_length(int(size / region.get_block_size()))
         region = gpt.align(region)
-        partition = gpt.create_partition(slot.name, region, PartitionType_PRIMARY)
-        return partition
-
+        return gpt.create_partition(slot.name, region, PartitionType_PRIMARY)
     raise Exception("no suitable partition slot found")
 
 
@@ -48,10 +44,10 @@ class MyCommitCallbacks(CommitCallbacks):
         super(MyCommitCallbacks, self).__init__()
 
     def message(self, message):
-        print("message '%s'" % message)
+        print(f"message '{message}'")
 
     def error(self, message, what):
-        print("error '%s' '%s'" % (message, what))
+        print(f"error '{message}' '{what}'")
         return False
 
 

@@ -16,7 +16,7 @@ save_devicegraph = False
 
 def run_command(name):
 
-    cmd = "ssh -l root %s -p %s %s" % (host, port, name)
+    cmd = f"ssh -l root {host} -p {port} {name}"
 
     p = Popen(cmd, shell = True, stdout = PIPE, stderr = PIPE, close_fds = True)
     stdout, stderr = p.communicate()
@@ -49,15 +49,13 @@ class MyRemoteCallbacks(RemoteCallbacks):
         super(MyRemoteCallbacks, self).__init__()
 
     def get_command(self, name):
-        print("command '%s'" % name)
-        command = run_command(name)
-        return command
+        print(f"command '{name}'")
+        return run_command(name)
 
     def get_file(self, name):
-        print("file '%s'" % name)
-        command = run_command("cat '%s'" % name)
-        file = RemoteFile(command.stdout)
-        return file
+        print(f"file '{name}'")
+        command = run_command(f"cat '{name}'")
+        return RemoteFile(command.stdout)
 
 
 def doit():
@@ -106,11 +104,11 @@ if len(args) > 0:
 for o, a in opts:
     if o == "--host":
         host = a
-    if o == "--port":
+    elif o == "--port":
         port = a
-    if o == "--save-mockup":
-        save_mockup = True
-    if o == "--save-devicegraph":
+    elif o == "--save-devicegraph":
         save_devicegraph = True
 
+    elif o == "--save-mockup":
+        save_mockup = True
 doit()

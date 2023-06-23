@@ -19,4 +19,4 @@ for name, pool in storage.get_pools().items():
     print(name)
 
     for device in pool.get_devices(probed):
-        print("    " + device.get_displayname())
+        print(f"    {device.get_displayname()}")

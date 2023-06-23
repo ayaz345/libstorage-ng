@@ -39,10 +39,7 @@ class MyDevicegraphStyleCallbacks(DevicegraphStyleCallbacks):
         if is_disk(device):
             attrs["color"] = "coral4"
             attrs["fillcolor"] = "coral3:coral"
-            if to_disk(device).is_rotational():
-                attrs["image"] = "hdd.svg"
-            else:
-                attrs["image"] = "ssd.svg"
+            attrs["image"] = "hdd.svg" if to_disk(device).is_rotational() else "ssd.svg"
         elif is_partition(device):
             attrs["color"] = "deepskyblue4"
             attrs["fillcolor"] = "deepskyblue3:deepskyblue"

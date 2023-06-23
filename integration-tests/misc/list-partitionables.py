@@ -31,7 +31,7 @@ partitionables = Partitionable.get_all(staging)
 
 for partitionable in sorted(partitionables, key = cmp_to_key(cmp1)):
 
-    print("%s" % partitionable.get_name())
+    print(f"{partitionable.get_name()}")
 
     if partitionable.has_partition_table():
 
@@ -39,5 +39,5 @@ for partitionable in sorted(partitionables, key = cmp_to_key(cmp1)):
 
         for partition in sorted(partition_table.get_partitions(), key = cmp_to_key(cmp2)):
 
-            print("  %s" % partition.get_name())
+            print(f"  {partition.get_name()}")
 

@@ -19,9 +19,7 @@ def create_partition(gpt, size):
 
         region.set_length(int(size / region.get_block_size()))
         region = gpt.align(region)
-        partition = gpt.create_partition(slot.name, region, PartitionType_PRIMARY)
-        return partition
-
+        return gpt.create_partition(slot.name, region, PartitionType_PRIMARY)
     raise Exception("no suitable partition slot found")
 
 

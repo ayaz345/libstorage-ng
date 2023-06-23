@@ -8,10 +8,10 @@ from storageitu import *
 
 
 def subvolume_exists(btrfs, path):
-    for subvolume in btrfs.get_btrfs_subvolumes():
-        if subvolume.get_path() == path:
-            return True
-    return False
+    return any(
+        subvolume.get_path() == path
+        for subvolume in btrfs.get_btrfs_subvolumes()
+    )
 
 
 set_logger(get_logfile_logger())

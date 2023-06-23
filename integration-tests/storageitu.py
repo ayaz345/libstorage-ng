@@ -13,7 +13,7 @@ class MyCheckCallbacks(CheckCallbacks):
         super(MyCheckCallbacks, self).__init__()
 
     def error(self, message):
-        print("error '%s'" % message)
+        print(f"error '{message}'")
 
 
 def check(storage):
@@ -31,15 +31,11 @@ def green(s):
 
 
 def colorize_action(message, action):
-    if is_delete(action):
-        return red(message)
-    return message
+    return red(message) if is_delete(action) else message
 
 
 def colorize_compound_action(message, compound_action):
-    if compound_action.is_delete():
-        return red(message)
-    return message
+    return red(message) if compound_action.is_delete() else message
 
 
 class MyCommitCallbacks(CommitCallbacksV2):
@@ -54,10 +50,10 @@ class MyCommitCallbacks(CommitCallbacksV2):
         self.action = None
 
     def message(self, message):
-        print("message '%s'" % colorize_action(message, self.action))
+        print(f"message '{colorize_action(message, self.action)}'")
 
     def error(self, message, what):
-        print("error '%s' '%s'" % (message, what))
+        print(f"error '{message}' '{what}'")
         return False
 
 

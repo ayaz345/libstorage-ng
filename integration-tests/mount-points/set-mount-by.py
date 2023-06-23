@@ -23,12 +23,7 @@ mount_points = MountPoint.find_by_path(staging, "/test")
 
 mount_point = mount_points[0]
 
-possible_mount_bys = []
-
-for possible_mount_by in mount_point.possible_mount_bys():
-    possible_mount_bys.append(possible_mount_by)
-possible_mount_bys.sort()
-
+possible_mount_bys = sorted(mount_point.possible_mount_bys())
 print(possible_mount_bys)
 
 mount_by = mount_point.get_mount_by()

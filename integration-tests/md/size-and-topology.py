@@ -61,8 +61,8 @@ def doit(metadata, level, num_devices, chunk_size):
     commit(storage)
 
     sysfs_path = md.get_sysfs_path()
-    seen_size = read_int("/sys" + sysfs_path + "/size") * 512
-    seen_io_size = read_int("/sys" + sysfs_path + "/queue/optimal_io_size")
+    seen_size = read_int(f"/sys{sysfs_path}/size") * 512
+    seen_io_size = read_int(f"/sys{sysfs_path}/queue/optimal_io_size")
 
     size_ok = expected_size == seen_size
     io_size_ok = expected_io_size == seen_io_size
@@ -71,11 +71,10 @@ def doit(metadata, level, num_devices, chunk_size):
                                                                        num_devices, chunk_size))
     if size_ok:
         results.write(", size %d" % (expected_size))
+    elif expected_size < seen_size:
+        results.write(", size %d < %d" % (expected_size, seen_size))
     else:
-        if expected_size < seen_size:
-            results.write(", size %d < %d" % (expected_size, seen_size))
-        else:
-            results.write(", size! %d > %d" % (expected_size, seen_size))
+        results.write(", size! %d > %d" % (expected_size, seen_size))
     if io_size_ok:
         results.write(", io-size %d" % (expected_io_size))
     else:

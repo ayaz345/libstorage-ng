@@ -21,7 +21,7 @@ print(staging)
 
 print("partitions on gpt:")
 for partition in gpt.get_partitions():
-    print("  %s %s" % (partition, partition.get_number()))
+    print(f"  {partition} {partition.get_number()}")
 print()
 
 
@@ -30,13 +30,13 @@ for device in sda.get_descendants(False):
 
     try:
         partition_table = to_partition_table(device)
-        print("  %s is partition table" % partition_table)
+        print(f"  {partition_table} is partition table")
     except DeviceHasWrongType:
         pass
 
     try:
         partition = to_partition(device)
-        print("  %s %s is partition" % (partition, partition.get_number()))
+        print(f"  {partition} {partition.get_number()} is partition")
     except DeviceHasWrongType:
         pass
 
